@@ -39,4 +39,16 @@ public class TaskService {
         tasks.add(newTask);
         return newTask;
     }
+
+    // 修改完成状态
+    public TaskResponse updateTaskCompleted(int taskId, Boolean completed) {
+        if(completed == null) {
+            throw new IllegalArgumentException("完成状态不能为空");
+        }
+
+        TaskResponse task = getTaskById(taskId);
+
+        task.setCompleted(completed);
+        return task;
+    }
 }
