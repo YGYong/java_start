@@ -1,0 +1,38 @@
+package com.ygyong.task_manager.mapper;
+
+import com.ygyong.task_manager.entity.Task;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+
+@Mapper
+public interface TaskMapper {
+    // 查询 SQL 位于 resources/mapper/TaskMapper.xml，方法名与 select 的 id 对应。
+    List<Task> findAll();
+
+    Task findById(@Param("id") int id);
+
+    List<Task> findByConditions(
+            @Param("completed") Boolean completed,
+            @Param("keyword") String keyword);
+
+    List<Task> findPageByConditions(
+            @Param("completed") Boolean completed,
+            @Param("keyword") String keyword,
+            @Param("size") int size,
+            @Param("offset") long offset);
+
+    long countByConditions(
+            @Param("completed") Boolean completed,
+            @Param("keyword") String keyword);
+
+    @Insert("INSERT INTO task (title, completed) VALUES (#{title}, #{completed})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insert(Task task);
+
+    @Update("UPDATE task SET completed = #{completed} WHERE id = #{id}")
+    int updateCompleted(@Param("id") int id, @Param("completed") boolean completed);
+
+    @Delete("DELETE FROM task WHERE id = #{id}")
+    int deleteById(@Param("id") int id);
+}
